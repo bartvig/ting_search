@@ -24,13 +24,20 @@ function ting_search_result_count_content_type_render($subtype, $conf, $panel_ar
   if (isset($search_result)) {
     $results = isset($search_result->numTotalObjects) ? (int) $search_result->numTotalObjects : 0;
     $string = format_plural($results > 1 ? $results : 1, 'Result', 'Results');
+    $title = t('Search result <span class="js-count" data-js-count="!count" class="search-field-in-content--amount">(!count !string)</span>', array(
+      '!count' => $results,
+      '!string' => $string,
+    ));
+    if ($conf['override_title']) {
+      $title = $conf['override_title_text'] . ' ' . t('<span class="js-count" data-js-count="!count" class="search-field-in-content--amount">(!count !string)</span>', array(
+          '!count' => $results,
+          '!string' => $string,
+        ));
+    }
     $block->content = array(
       '#prefix' => '<h1 class="page-title">',
       '#suffix' => '</h1>',
-      '#markup' => t('Search result <span class="js-count" data-js-count="!count" class="search-field-in-content--amount">(!count !string)</span>', array(
-        '!count' => $results,
-        '!string' => $string,
-      )),
+      '#markup' => $title,
     );
   }
 
